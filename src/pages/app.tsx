@@ -3,7 +3,7 @@ import Select, { IOption } from "../components/select"
 import Button from "../components/button"
 import DepositModal from "../components/modal/depositModal"
 import TauIcon from "../components/icons/tauIcon"
-import { isLamdenKey, moneyFormat, verifyNote } from "../untils/commonUntils"
+import { getIP, isLamdenKey, moneyFormat, verifyNote } from "../untils/commonUntils"
 import { WalletContext } from "../context/walletContext"
 import { checkWalletIsInstalled } from "../untils/walletUntils" 
 import { contracts, relayerList } from "../global"
@@ -210,6 +210,13 @@ const Withdraw = () => {
 const AppPage = () => {
 
   const [currentFeature, setCurrentFeature] = useState<Feature>('deposit')
+  const [ip, setIp] = useState<string>('')
+  
+  useEffect(()=>{
+    getIP().then((ip)=>{
+      setIp(ip)
+    })
+  }, [])
 
   return (
     <div id="app">
@@ -223,7 +230,7 @@ const AppPage = () => {
         <hr/>
         <div className="content">{currentFeature === 'deposit' ? <Deposit /> : <Withdraw />}</div>
       </div>
-      <div className="legal">We recsommend using a VPN as another layer of protection.</div>
+      <div className="legal">We recsommend using a VPN as another layer of protection. {ip? `Your current IP address is ${ip}.` : undefined}</div>
     </div>
   )
 }

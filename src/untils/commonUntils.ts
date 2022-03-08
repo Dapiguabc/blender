@@ -37,3 +37,17 @@ export const isLamdenKey = ( key: string ) => {
 export function isFunction(obj: any): obj is Function {
     return typeof obj === 'function';
 }
+
+export async function getIP(): Promise<string>{
+    try {
+        const res = await fetch(
+            `https://api.ipify.org`, {
+                method: 'GET'
+            }
+        )
+        return res.text()
+    } catch (error) {
+        console.log(error)
+        return ''
+    }
+}

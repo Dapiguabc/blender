@@ -8,7 +8,7 @@ const IndexPage = () => {
     <div id="home">
       <div className="desc">
         <div className="title">Send Transactions <span>Anonymously</span></div>
-        <div className="body">Blender is a smart contract on the <a href="https://www.lamden.io" target="_blank">Lamden</a> blockchain that makes it possible to send transactions anonymously — your withdraw address will never know where it originated.</div>
+        <div className="body">Blender is a smart contract on the <a href="https://www.lamden.io" rel="noreferrer" target="_blank">Lamden</a> blockchain that makes it possible to send transactions anonymously — your withdraw address will never know where it originated.</div>
       </div>
       <div className="features">
         <div className="feature">
