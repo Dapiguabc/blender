@@ -1,0 +1,91 @@
+#app {
+    @media screen and (max-width: 980px) {
+        & {
+            width: 80%; 
+        }
+    }
+    color: $font-secondary;
+    margin: 0 auto;
+    padding-top: 50px;
+    max-width: 434px;
+    min-width: 343px;
+    .legal {
+        @include text-legal;
+        text-align: left;
+        a {
+            text-decoration: underline;
+            color: $font-primary;
+        }
+    }
+    .title {
+        @include text-title;
+        text-align: center;
+        margin-bottom: 10px;
+        color: $font-secondary;
+        span {
+            color: $font-primary;
+        }
+    }
+    >.action {
+        margin: 10px 0;
+        padding: 30px 0;
+        background: $bg-primary;
+        hr {
+            border: 0;
+            height: 1px;
+            background: $color-gray;
+        }
+        .features {
+            @include text-body;
+            display: flex;
+            justify-content: center;
+            div {
+                margin: 0 20px;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .active {
+                color: $font-primary;
+            }
+        }
+        .content {
+            padding: 0 30px;
+            .title {
+                text-align: left;
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 28px;
+            }
+            .alt {
+                display: inline-block;
+                background: $active-bg-color;
+                width: 14px;
+                height: 14px;
+                line-height: 14px;
+                color: $font-black;
+                font-size: 12px;
+                font-weight: 700;
+                text-align: center;
+            }
+            .mb20 {
+                margin-bottom: 20px;
+            }
+            .mb5 {
+                margin-bottom: 5px;
+            }
+            input[type="text"] {
+                background-color: $bg-light;
+                height: 50px;
+                width: 100%;
+                box-sizing: border-box;
+                appearance: none;
+                padding-left: 16px;
+                border: 1.5px solid $inactive-border-color;
+                outline: 0;
+                &:focus {
+                    border: 1.5px solid $active-border-color;
+                }
+            }
+        }
+    }
+}

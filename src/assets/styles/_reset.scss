@@ -1,0 +1,22 @@
+/**
+* Clear default style
+*/
+ol, ul {
+	list-style: none;
+}
+
+li {
+    list-style-type:none;  
+}
+
+a {
+  cursor: pointer;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active{
+  color: $font-primary;
+  text-decoration: none;
+}

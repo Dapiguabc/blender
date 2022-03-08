@@ -1,0 +1,30 @@
+#faq {
+    .warp {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        max-width: 666px;
+        color: $font-secondary;
+        .title {
+            @include text-title;
+            margin-top: 50px;
+            margin-bottom: 20px
+        }
+        .card {
+            @include text-legal;
+            background: $bg-primary;
+            margin-bottom: 10px;
+            min-height: 40px;
+            line-height: 40px;
+            padding-left: 12px;
+            font-weight: bold;
+            .answer {
+                @include text-legal;
+                padding-bottom: 20px;
+            }
+        }
+    }
+}

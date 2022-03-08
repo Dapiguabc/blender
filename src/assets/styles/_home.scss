@@ -1,0 +1,89 @@
+/**
+* Style for index page
+*/
+#home {
+    color: $font-secondary;
+    .desc {
+        max-width: 519px;
+        width: 90%;
+        margin: 50px auto;
+        .title {
+            @include text-title;
+            color: $font-secondary;
+            text-align: center;
+            margin-bottom: 16px;
+            span {
+                color: $font-primary;
+            }
+        }
+        .body {
+            @include text-legal;
+            text-align: left;
+            a {
+                text-decoration: underline;
+            }
+        }
+    }
+    .features {
+        display: flex;
+        margin: 0 auto;
+        width: 52%;
+        text-align: center;
+        .feature {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0 31px;
+            height: 273px;
+            border-right: 1px solid $color-gray;
+            .main {
+                .logo {
+                    margin-bottom: 25px;
+                }
+                .title {
+                    @include text-button;
+                    white-space: nowrap;
+                    color: $font-primary;
+                    margin-bottom: 10px;
+                }
+                .body {
+                    @include text-legal;
+                }
+            }
+            .foot {
+                @include text-legal;
+                text-decoration: underline;
+            }
+            &:last-child {
+                border: 0;
+            }
+        }
+    }
+    @media screen and (max-width: 980px) {
+        & {
+            padding-bottom: 50px;
+        }
+        .features {
+            flex-direction: column;
+            .feature {
+                height: auto;
+                border-right: 0;
+                border-bottom: 1px solid #6A6868;
+                padding: 36px 0;
+                .main {
+                    margin-bottom: 36px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 980px) {
+    .home-footer {
+        position: relative!important;
+        justify-content: center!important;
+        left: 0!important;
+        transform: translateX(0)!important;
+    }
+}
+

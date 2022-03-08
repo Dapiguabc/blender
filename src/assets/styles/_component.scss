@@ -1,0 +1,319 @@
+/**
+* Style for Components
+*/
+.select {
+    @include text-legal;
+    width: 174px;
+    height: 50px;
+    position: relative;
+    background: $bg-light;
+    color: $font-black;
+    box-sizing: border-box;
+    .currently-selectd {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
+        line-height: 50px;
+        @include outline;
+        &.active {
+            @include outline(1px, $active-border-color);
+        }
+    }
+    .option-wrap {
+        position: absolute;
+        z-index: 666;
+        width: 100%;
+        @include outline;
+        .option-item {
+            padding: 5px 0 5px 16px;
+            line-height: 31px;
+            background-color: $bg-light;
+            &.selected, &:hover {
+                font-weight: 700;
+                background-color: $active-bg-color;
+            }
+        }
+        .option-empty {
+            background-color: $bg-light;
+            padding: 36px 5px;
+            text-align: center;
+        }
+    }
+    .select-input {
+        height: 100%;
+        border: none;
+        outline: none;
+        padding: 0;
+        background: $bg-light;
+        width: 100%;
+    }
+}
+
+button {
+    @include text-body;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    position: relative;
+    padding: 3px;
+    cursor: pointer;
+    border: unset;
+    padding: 13px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    &:active{
+        top: 1px;
+    }
+    &:focus { 
+        outline: none; 
+    }
+    &:hover {
+        filter: brightness(1.2);
+    }
+    &.primary {
+        background-color: $primary-color;
+    }
+    &.large {
+        height: 48px;
+        @include text-button;
+    }
+    &.disabled {
+        background-color: $bg-light;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+        filter: brightness(0.5);
+    }
+    &.cancel {
+        background-color: transparent;
+        border: $bg-light 1px solid;
+        color: $font-secondary;
+    }
+}
+
+.modal{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: block;
+    &>.modal-content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        padding: 55px 36px 36px 36px;
+        background-color: $bg-secondary;
+        @include text-body;
+        .close-btn {
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            right: 32px;
+            top: 32px;
+            background: url('../images/close.svg');
+        }
+        .deposit {
+            .success {
+                color: $success-color!important;
+            }
+            .title {
+                @include text-title;   
+            }
+            .info {
+                margin: 20px 0;
+                .link {
+                    text-decoration: underline;
+                    color: $primary-color;
+                }
+            } 
+            .warning {
+                @include text-legal;
+                margin-bottom: 20px;
+            }
+            .note {
+                margin-bottom: 20px;
+                @include text-legal;
+                .alt {
+                    display: inline-block;
+                    background: $active-bg-color;
+                    width: 14px;
+                    height: 14px;
+                    line-height: 14px;
+                    color: $font-black;
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-align: center;
+                }
+                &>.note-content {
+                    @include text-legal;
+                    margin-top: 5px;
+                    background: $bg-light;
+                    color: $font-black;
+                    padding: 15px 0;
+                    text-align: center;
+                    border: $inactive-border-color 1px solid;
+                }
+            }
+            .actions {
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .action {
+                    margin:0 10px;
+                    cursor: pointer;
+                    color: $font-primary;
+                    span {
+                        text-decoration: underline;
+                        margin-right: 10px;
+                    }
+                }
+            }
+            button{
+                width: 100%;
+                @include text-button;
+            }
+            .confirm-btn {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 18px;
+        margin-right: 10px;
+        position: relative;
+    }
+
+    input[type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+    }
+
+    input[type="checkbox"]:checked::before {
+        content: "\2714";
+        background-color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 2px;
+        background: $primary-color;
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+.popup {
+    &.altPopup {  
+        position: relative;
+        display: inline-block;
+        .body {
+            display: none;
+        }
+        &:hover {
+            .body {
+                z-index: 999;
+                display: block;
+                position: absolute;
+                left: -1px;
+                top: calc(100% + 8px);
+                transform: translate(-50%, 0);
+                padding: 10px;
+                border: 1px solid $active-bg-color;
+                border-radius: 6px;
+                background-color: $bg-light;
+                color: $font-black;
+                width: 200px;
+                word-wrap: break-word;
+                word-break: normal;
+                @include text-legal;
+                &:before{
+                    content: '';
+                    position: absolute;
+                    top: -9px;
+                    left: 50%;
+                    border-right: 8px solid transparent;
+                    border-bottom: 8px solid $inactive-border-color;
+                    border-left: 10px solid transparent;
+                }
+                &:after{
+                    content: '';
+                    position: absolute;
+                    top: -8px;
+                    left: 50%;
+                    border-right: 8px solid transparent;
+                    border-bottom: 8px solid $bg-light;
+                    border-left: 10px solid transparent;
+                }
+            }
+        }
+    }
+}
+
+.message-component {
+    width: 240px!important;
+    min-height: 88px;
+    box-sizing: border-box;
+    color: $font-black;
+    &.success {
+        background: $primary-color;
+    }
+    &.error {
+        background: #FF5C4A;
+    }
+    .title {
+        @include text-body;
+        font-weight: bold;
+        text-transform: capitalize
+    }
+    .info {
+        @include text-legal;
+        a {
+            text-decoration: underline;
+            display: block;
+            word-break: break-all;
+        }
+    }
+    .rc-notification-notice-close {
+        opacity: 0.6;
+    }
+}
+
+.share-card {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    svg {
+        display: block;
+    }
+    &:hover {
+        top: -2px;
+        position: relative;
+    }
+}

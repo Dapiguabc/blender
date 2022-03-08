@@ -1,0 +1,44 @@
+@mixin text-title {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    letter-spacing: 0.2px;
+    word-spacing: 4px;
+}
+
+@mixin text-button {
+    //styleName: Nado/Button;
+    font-family: IBM Plex Mono;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0px;
+    word-spacing: 4px;
+}
+
+@mixin text-body {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0px;
+    word-spacing: 4px;
+}
+
+@mixin text-legal {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0px;
+    word-spacing: 4px;
+}
+
+/*
+* outline
+*/
+@mixin outline($width: 1px, $color: $inactive-border-color){
+    outline: $width solid $color;
+}

@@ -1,0 +1,23 @@
+.flex {
+    display: flex;
+}
+.flex-align-center {
+    align-items: center;
+}
+.flex-just-between {
+    justify-content: space-between;
+}
+
+// font
+.text-legal {
+    @include text-legal
+}
+
+.color-white {
+    color: $font-secondary;
+}
+
+.errormsg {
+    @include text-legal;
+    color: #FF5C4A;
+}
