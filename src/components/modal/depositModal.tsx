@@ -92,7 +92,7 @@ const DepositModal: React.FunctionComponent<IDepositModal> = ({ depositContract,
         sendTokenApproval(new BN(defaultApproveAmount), token.contract, depositContract, (res: any) => {
             console.log(res)
             setLoading(false)
-            if (res?.resultInfo?.statusCode === 0) {
+            if (res?.data?.resultInfo?.statusCode === 0) {
                 setApproved(true)
                 Message.pop({
                     type: 'success',

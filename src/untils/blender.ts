@@ -99,7 +99,6 @@ export async function blenderWithdraw(note: string, recipient: string, relayer_u
     // extract data from note
     const noteSplit = note.split('-')
     if (noteSplit.length != 4) {
-        alert('Invalid note.')
         return
     }
     // prepare POST
@@ -118,6 +117,7 @@ export async function blenderWithdraw(note: string, recipient: string, relayer_u
     const res = await fetch(
         `${relayer_url}/relay`, {
             method: 'POST',
+            mode: "no-cors",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
