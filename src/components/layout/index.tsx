@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from './header'
 import Footer from './footer'
 import { LWC } from '../../untils/walletUntils'
-import { WalletContext } from '../../context/walletContext'
+import { Wallet, WalletContext } from '../../context/walletContext'
 import Message from '../message'
 import { PageProps } from 'gatsby'
 import { createSocketService } from '../../untils/socket'
@@ -12,7 +12,7 @@ const navList = [{
   name: 'HOME',
   value: '/',
 },{
-  name: 'LANUCH APP',
+  name: 'LAUNCH APP',
   value: '/app',
 },{
   name: 'FAQ',
@@ -22,61 +22,48 @@ const navList = [{
   value: '/doc',
 }]
 
-type WalletStatus = "noinstalled" | "locked" | "connected"  
-
 const socketService = createSocketService()
 
-const Layout: React.FC<PageProps> = ({ children, location}) => {
+const Layout: React.FC<PageProps> = (props) => {
+    const { children, location } = props
     const { pathname } = location
-    const [wallet, setWallet] = useState<string | undefined>(undefined)
-    const [walletStaus, setWalletStaus] = useState<WalletStatus | undefined>(undefined)
-    const [balance, setBalance] = useState<number | string>(0)
+    const [wallet, setWallet] = useState<Wallet>({
+      installed: false,
+      locked: true,
+      connected: false,
+      account: '',
+      currencyBalance: 0
+    })
+    const [inital, setInital] = useState(false)
+
+    useEffect(() => {
+      if (!inital) return
+      if (wallet.connected) {
+        Message.pop({
+          type: 'success',
+          title: 'Wallet Connect Success',
+          content: `Account ${wallet.account} is using.`
+        })
+      } 
+    }, [inital, wallet.connected])
 
     useEffect(()=>{
-      if (walletStaus === "noinstalled") {
-        setWallet(undefined)
-        Message.pop({
-          type: 'error',
-          title: 'Wallet Error',
-          content: <>
-            Please install wallet.
-            <a>https://chrome.google.com/webstore/detail/lamden-vault-browser-exte/fhfffofbcgbjjojdnpcfompojdjjhdim</a>
-          </>
-        })
-        setWalletStaus(undefined)
-      } else if (walletStaus === "locked") {
-        setWallet(undefined)
-        Message.pop({
-          type: 'error',
-          title: 'Wallet Locked',
-          content: <>
-          Please unlock wallet.
-        </>
-        })
-        setWalletStaus(undefined)
-      } if (walletStaus === "connected") {
-        if (wallet)
-          Message.pop({
-            type: 'success',
-            title: 'Wallet Connect Success',
-            content: `Account ${wallet} is using.`
+      if (!inital) return
+      if (wallet.account) {
+        checkContractState("currency", "balances", [wallet.account], 0).then((res) => {
+          setWallet({
+            ...wallet,
+            currencyBalance: res.toString()
           })
-      }
-    }, [walletStaus, wallet])
-
-    useEffect(()=>{
-      if (wallet) {
-        checkContractState("currency", "balances", [wallet], 0).then((res) => {
-          setBalance(res.toString())
         })
-        socketService.joinCurrencyBalanceFeed(wallet)
-        socketService.joinTokenBalanceFeed("con_phi_lst001", wallet, "mainnet")
+        socketService.joinCurrencyBalanceFeed(wallet.account)
+        socketService.joinTokenBalanceFeed("con_phi_lst001", wallet.account, "mainnet")
         return () => {
-          socketService.leaveCurrencyBalanceFeed(wallet)
-          socketService.leaveTokenBalanceFeed("con_phi_lst001", wallet, "mainnet")
+          socketService.leaveCurrencyBalanceFeed(wallet.account)
+          socketService.leaveTokenBalanceFeed("con_phi_lst001", wallet.account, "mainnet")
         }
       }
-    }, [wallet])
+    }, [inital, wallet.account])
 
     const print = (e: any) => {
       console.log(e)
@@ -87,20 +74,35 @@ const Layout: React.FC<PageProps> = ({ children, location}) => {
         //Respond to Errors
         return
       }
-      if (!e.installed){
-        //Prompt user to unlock wallet
-        setWalletStaus("noinstalled")
-      }
-      if (e.locked){
-          //Prompt user to unlock wallet
-          setWalletStaus("locked")
+      if (e.installed) {
+        if (e.locked) {
+          Message.pop({
+            type: 'error',
+            title: 'Wallet Locked',
+            content: <>
+            Please unlock wallet.
+          </>
+          })
+        }
       } else {
-          //Get user's account address
-          if (e.wallets[0] !== wallet) {
-            setWalletStaus("connected")
-            setWallet(e.wallets[0])
-          }
-      } 
+        Message.pop({
+          type: 'error',
+          title: 'Wallet Not Installed',
+          content: <>
+            Please install wallet.
+            <a>https://chrome.google.com/webstore/detail/lamden-vault-browser-exte/fhfffofbcgbjjojdnpcfompojdjjhdim</a>
+          </>
+        })
+      }
+      let connected = e.installed && !e.locked ? true : false
+      setWallet({
+        ...wallet,
+        installed: e.installed,
+        locked: e.locked,
+        connected: connected,
+        account: e.wallets[0],
+      })
+      setInital(true)
     }
 
     const handleBalanceUpdate = (res: any, networkType: string) => {
@@ -121,7 +123,7 @@ const Layout: React.FC<PageProps> = ({ children, location}) => {
     },[])
 
     return (
-      <WalletContext.Provider value={{wallet, balance, setWallet}}>
+      <WalletContext.Provider value={{wallet, setWallet, pageProps: props}}>
         <div id="layout">
           <Header navList={ navList } pathname={pathname}/>
           <div>

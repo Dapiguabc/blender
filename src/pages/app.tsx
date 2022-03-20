@@ -12,6 +12,7 @@ import WithdrawModal from "../components/modal/withdrawModal"
 import Message from "../components/message"
 import useCookieState from "../hooks/useCookieState"
 import SelectWithInput from "../components/select/selectWithInput"
+import { Link } from "gatsby"
 
 const amountOptions = [{
   key: '1',
@@ -61,12 +62,12 @@ const Deposit = () => {
   const { wallet } = useContext(WalletContext)
 
   const btnName = useMemo(() => {
-    if (wallet) {
+    if (wallet.connected) {
       return `Deposit ${moneyFormat(amount)} ${token?.symbol}`
     } else {
       return `Connect Wallet`
     }
-  }, [wallet, amount, token])
+  }, [wallet.connected, amount, token])
 
   const depositContract = useMemo(() => {
     if (token) {
@@ -78,12 +79,12 @@ const Deposit = () => {
   }, [amount, token])
 
   const btnHandle = useCallback(() => {
-    if (wallet) {
+    if (wallet.connected) {
       setShowDepositModal(true)
     } else {
       checkWalletIsInstalled()
     }
-  }, [wallet]) 
+  }, [wallet.connected]) 
 
   const handleDepositModal = (s:boolean | undefined) => { 
     setShowDepositModal(s) 
@@ -119,7 +120,7 @@ const Deposit = () => {
         </div>
         <div className="text-legal color-white">We have predetermined amounts that will allow your deposit to blend in to the crowd to remain anonymous.</div>
         <Button className={'primary'} style={{width: "100%", marginTop: "30px"}} onClick={btnHandle}>{btnName}</Button>
-        <DepositModal onClose={()=>{setShowDepositModal(false)}} depositContract={depositContract} amount={amount as number} account={wallet as string} token={token as TokenMeta} show={ showDepositModal } onChange={ handleDepositModal } />
+        <DepositModal onClose={()=>{setShowDepositModal(false)}} depositContract={depositContract} amount={amount as number} account={wallet.account} token={token as TokenMeta} show={ showDepositModal } onChange={ handleDepositModal } />
     </>
   )
 }
@@ -211,6 +212,7 @@ const AppPage = () => {
 
   const [currentFeature, setCurrentFeature] = useState<Feature>('deposit')
   const [ip, setIp] = useState<string>('')
+  const { pageProps } = useContext(WalletContext)
   
   useEffect(()=>{
     getIP().then((ip)=>{
@@ -218,10 +220,18 @@ const AppPage = () => {
     })
   }, [])
 
+  useEffect(() => {
+    if (pageProps && pageProps.location.hash !== '') {
+      let hash = pageProps.location.hash.replace("#", '')
+      setCurrentFeature(hash as Feature)
+    }
+  }, [pageProps])
+
+
   return (
     <div id="app">
       <div className="title">Send Transactions <span>Anonymously</span></div>
-      <div className="legal">This is experimental software, please use Blender at your own risk. <a href="https://www.lamden.io" target="_blank">Learn More</a></div>
+      <div className="legal">This is experimental software, please use Blender at your own risk. <Link to="/faq">Learn More</Link></div>
       <div className="action">
         <div className="features">
           <div className={currentFeature === 'deposit' ? 'active' : undefined } onClick={()=>{ setCurrentFeature('deposit') }}>Deposit</div>

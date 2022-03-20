@@ -29,6 +29,10 @@
         margin: 0 auto;
         width: 52%;
         text-align: center;
+        a {
+            color: $font-primary;
+            text-decoration: underline;
+        }
         .feature {
             display: flex;
             flex-direction: column;

@@ -8,6 +8,7 @@ import { formatAccountAddress, moneyFormat } from '../../untils/commonUntils'
 import NavIcon from '../icons/layout/navIcon'
 import CloseCircleIcon from '../icons/closeCircleIcon'
 import BN from 'bignumber.js'
+import { lamdenNetworkInfo } from '../../global'
 
 export const Nav = ({ navList, className, pathname}: any) => {
     
@@ -27,12 +28,16 @@ export const Nav = ({ navList, className, pathname}: any) => {
 }
 
 const Header = ({ navList, pathname }: any) => {
-    const { wallet, setWallet, balance } = useContext(WalletContext)
+    const { wallet, setWallet } = useContext(WalletContext)
     const [showMenu, setShowMenu] = useState(false)
 
     const handleClick = async () => {
-        if (wallet && wallet !== '') {
-            setWallet(undefined)
+        if (wallet.connected) {
+            setWallet({
+                ...wallet,
+                connected: false,
+                account: ''
+            })
         } else {
             await checkWalletIsInstalled()
         }
@@ -48,9 +53,9 @@ const Header = ({ navList, pathname }: any) => {
             <div className='menu-btn' onClick={handleMenuClick}>{showMenu ? <CloseCircleIcon width='32px' height='32px' color='#efefef' /> : <NavIcon />}</div>
             <Nav pathname={pathname} className={showMenu ? "show" : null} navList={navList} />
             <div className='wallet-btn'>
-                <Button className='primary' onClick={handleClick}>{wallet ? 'Disconnect Wallet' : 'Conenct Wallet'}</Button>
-                { wallet ? 
-                    <div className='wallet-info'><a className='link' href='' target='_blank'>{formatAccountAddress(wallet)}</a>{' | '}{`${moneyFormat(new BN(balance).toFixed(4))} TAU`}</div>
+                <Button className='primary' onClick={handleClick}>{wallet.connected ? 'Disconnect Wallet' : 'Connect Wallet'}</Button>
+                { wallet.connected ? 
+                    <div className='wallet-info'><a className='link' href={`${lamdenNetworkInfo.blockexplorer}/addresses/${wallet.account}`} target='_blank'>{formatAccountAddress(wallet.account)}</a>{' | '}{`${moneyFormat(new BN(wallet.currencyBalance).toFixed(4))} TAU`}</div>
                     :
                     undefined
                 }

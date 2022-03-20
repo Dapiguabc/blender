@@ -2,8 +2,14 @@ import * as React from "react"
 import WalletIcon from "../components/icons/home/walletIcon"
 import DepositIcon from "../components/icons/home/depositIcon"
 import WithdrawIcon from "../components/icons/home/withdrawIcon"
+import { Link } from "gatsby"
+import { checkWalletIsInstalled } from "../untils/walletUntils"
+import { WalletContext } from "../context/walletContext"
 
 const IndexPage = () => {
+
+  const { wallet } = React.useContext(WalletContext)
+  
   return (
     <div id="home">
       <div className="desc">
@@ -17,7 +23,7 @@ const IndexPage = () => {
             <div className="title">Connect Wallet</div>
             <div className="body">Connect your <a href="good">Lamden Wallet</a> to the Blender dApp. This will be the account you use to deposit TAU.</div>
           </div>
-          <div className="foot"><a href="good">Connect Wallet</a></div>
+          <div className="foot" onClick={checkWalletIsInstalled}><a>{wallet.connected ? 'Disconnect Wallet' : 'Connect Wallet'}</a></div>
         </div>
         <div className="feature">
           <div className="main">
@@ -25,7 +31,7 @@ const IndexPage = () => {
             <div className="title">Deposit TAU</div>
             <div className="body">Deposit your TAU into one of the predetermined amounts. Your deposit will be blended into the crowd to remain anonymous.</div>
           </div>
-          <div className="foot"><a href="good">Deposit</a></div>
+          <div className="foot"><Link to="/app#deposit">Deposit</Link></div>
         </div>
         <div className="feature">
           <div className="main">
@@ -33,7 +39,7 @@ const IndexPage = () => {
             <div className="title">Withdraw Anonymously</div>
             <div className="body">Use the note you received during your deposit and enter the withdraw address that will receives TAU anonymously from the smart contract.</div>
           </div>
-          <div className="foot"><a href="good">Withdraw</a></div>
+          <div className="foot"><Link to="/app#withdraw">Withdraw</Link></div>
         </div>
       </div>
     </div>

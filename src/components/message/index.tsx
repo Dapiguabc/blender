@@ -25,7 +25,7 @@ const Message = (function() {
         className,
         key, content, onClose,
         closable = true,
-        duration = 2,
+        duration = 2000,
         type = 'success',
     } = config
 
